@@ -1763,4 +1763,7 @@
     <string name="pocket_stories_feature_caption">Part of the Firefox family. %s</string>
     <!-- Clickable text for opening an external link for more information about Pocket. -->
     <string name="pocket_stories_feature_learn_more">Learn more</string>
+    <string tools:ignore="UnusedResources" name="gdpr_has_you_covered_firefox_has_gdpr_covered">gdpr has you covered firefox has gdpr covered</string>
+    <string tools:ignore="UnusedResources" name="sharing_your_phone_autoclosing_private_tabs_is_for_you">sharing your phone autoclosing private tabs is for you</string>
+    <string tools:ignore="UnusedResources" name="love_firefox_fill_in_our_survey">love_firefox fill in_our survey</string>
 </resources>

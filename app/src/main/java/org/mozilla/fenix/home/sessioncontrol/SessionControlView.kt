@@ -35,7 +35,7 @@ internal fun normalModeAdapterItems(
     expandedCollections: Set<Long>,
     recentBookmarks: List<RecentBookmark>,
     showCollectionsPlaceholder: Boolean,
-    showSetAsDefaultBrowserCard: Boolean,
+    showNimbusMessageCard: Boolean,
     recentTabs: List<RecentTab>,
     recentVisits: List<RecentlyVisitedItem>,
     pocketStories: List<PocketRecommendedStory>
@@ -46,7 +46,7 @@ internal fun normalModeAdapterItems(
     // Add a synchronous, unconditional and invisible placeholder so home is anchored to the top when created.
     items.add(AdapterItem.TopPlaceholderItem)
 
-    if (showSetAsDefaultBrowserCard) {
+    if (showNimbusMessageCard) {
         items.add(AdapterItem.ExperimentDefaultBrowserCard)
     }
 
@@ -155,7 +155,7 @@ private fun HomeFragmentState.toAdapterList(): List<AdapterItem> = when (mode) {
         expandedCollections,
         recentBookmarks,
         showCollectionPlaceholder,
-        showSetAsDefaultBrowserCard,
+        showNimbusMessageCard,
         recentTabs,
         recentHistory,
         pocketStories

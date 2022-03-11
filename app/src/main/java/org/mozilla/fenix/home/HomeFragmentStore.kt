@@ -45,7 +45,7 @@ class HomeFragmentStore(
  * @property mode The state of the [HomeFragment] UI.
  * @property topSites The list of [TopSite] in the [HomeFragment].
  * @property showCollectionPlaceholder If true, shows a placeholder when there are no collections.
- * @property showSetAsDefaultBrowserCard If true, shows the default browser card
+ * @property showNimbusMessageCard If true, shows the nimbus message card
  * @property recentTabs The list of recent [RecentTab] in the [HomeFragment].
  * @property recentBookmarks The list of recently saved [BookmarkNode]s to show on the [HomeFragment].
  * @property recentHistory The list of [RecentlyVisitedItem]s.
@@ -59,7 +59,7 @@ data class HomeFragmentState(
     val mode: Mode = Mode.Normal,
     val topSites: List<TopSite> = emptyList(),
     val showCollectionPlaceholder: Boolean = false,
-    val showSetAsDefaultBrowserCard: Boolean = false,
+    val showNimbusMessageCard: Boolean = false,
     val recentTabs: List<RecentTab> = emptyList(),
     val recentBookmarks: List<RecentBookmark> = emptyList(),
     val recentHistory: List<RecentlyVisitedItem> = emptyList(),
@@ -143,7 +143,7 @@ private fun homeFragmentStateReducer(
         is HomeFragmentAction.RemoveCollectionsPlaceholder -> {
             state.copy(showCollectionPlaceholder = false)
         }
-        is HomeFragmentAction.RemoveSetDefaultBrowserCard -> state.copy(showSetAsDefaultBrowserCard = false)
+        is HomeFragmentAction.RemoveSetDefaultBrowserCard -> state.copy(showNimbusMessageCard = false)
         is HomeFragmentAction.RecentTabsChange -> {
             val recentSearchGroup = action.recentTabs.find { it is SearchGroup } as SearchGroup?
             state.copy(

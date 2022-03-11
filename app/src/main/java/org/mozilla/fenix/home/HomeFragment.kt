@@ -103,6 +103,7 @@ import org.mozilla.fenix.ext.requireComponents
 import org.mozilla.fenix.ext.runIfFragmentIsAttached
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.sort
+import org.mozilla.fenix.gleanplumb.DefaultMessageController
 import org.mozilla.fenix.home.blocklist.BlocklistHandler
 import org.mozilla.fenix.home.blocklist.BlocklistMiddleware
 import org.mozilla.fenix.home.mozonline.showPrivacyPopWindow
@@ -245,7 +246,7 @@ class HomeFragment : Fragment() {
                     topSites = getTopSites(components),
                     recentBookmarks = emptyList(),
                     showCollectionPlaceholder = components.settings.showCollectionsPlaceholderOnHome,
-                    showSetAsDefaultBrowserCard = components.settings.shouldShowSetAsDefaultBrowserCard(),
+                    showNimbusMessageCard = components.messagesManager.areMessagesAvailable(),
                     // Provide an initial state for recent tabs to prevent re-rendering on the home screen.
                     //  This will otherwise cause a visual jump as the section gets rendered from no state
                     //  to some state.
@@ -334,6 +335,10 @@ class HomeFragment : Fragment() {
                 settings = components.settings,
                 engine = components.core.engine,
                 metrics = components.analytics.metrics,
+                messageController = DefaultMessageController(
+                    messageManager = components.messagesManager,
+                    homeActivity = activity
+                ),
                 store = store,
                 tabCollectionStorage = components.core.tabCollectionStorage,
                 addTabUseCase = components.useCases.tabsUseCases.addTab,
