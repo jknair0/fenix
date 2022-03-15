@@ -19,5 +19,7 @@ internal object AppStoreReducer {
             state.copy(nonFatalCrashes = state.nonFatalCrashes - action.crash)
         is AppAction.RemoveAllNonFatalCrashes ->
             state.copy(nonFatalCrashes = emptyList())
+        is AppAction.UpdateMessages ->
+            state.copy(gleanPlumbMessages = action.messages)
     }
 }

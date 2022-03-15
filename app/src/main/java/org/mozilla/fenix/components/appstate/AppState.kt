@@ -6,6 +6,7 @@ package org.mozilla.fenix.components.appstate
 
 import mozilla.components.lib.crash.Crash.NativeCodeCrash
 import mozilla.components.lib.state.State
+import org.mozilla.fenix.gleanplumb.Message
 
 /**
  * Value type that represents the state of the tabs tray.
@@ -16,5 +17,6 @@ import mozilla.components.lib.state.State
  */
 data class AppState(
     val inactiveTabsExpanded: Boolean = false,
-    val nonFatalCrashes: List<NativeCodeCrash> = emptyList()
+    val nonFatalCrashes: List<NativeCodeCrash> = emptyList(),
+    val gleanPlumbMessages: List<Message>,
 ) : State

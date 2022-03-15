@@ -37,6 +37,8 @@ import org.mozilla.fenix.browser.BrowserFragmentDirections
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
 import org.mozilla.fenix.collections.SaveCollectionStep
 import org.mozilla.fenix.components.TabCollectionStorage
+import org.mozilla.fenix.components.appstate.AppAction
+import org.mozilla.fenix.components.components
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.components.metrics.MetricController
 import org.mozilla.fenix.components.metrics.MetricsUtils
@@ -614,6 +616,8 @@ class DefaultSessionControlController(
     }
 
     override fun handleMessageClicked(message: Message) {
+        // todo add appStore to constructor.
+        //appStore.dispatch(AppAction.MessageClicked(message))
         messageController.onMessagePressed(message)
         fragmentStore.dispatch(HomeFragmentAction.RemoveSetDefaultBrowserCard)
     }
