@@ -128,7 +128,6 @@ class DefaultSessionControlControllerTest {
             mode = Mode.Normal,
             topSites = emptyList(),
             showCollectionPlaceholder = true,
-            showNimbusMessageCard = true,
             recentTabs = emptyList(),
             recentBookmarks = emptyList()
         )

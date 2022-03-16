@@ -9,51 +9,42 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.fenix.R
 import org.mozilla.fenix.databinding.NimbusMessageCardBinding
-import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.increaseTapArea
 import org.mozilla.fenix.gleanplumb.Message
-import org.mozilla.fenix.gleanplumb.MessagesManager
 import org.mozilla.fenix.home.sessioncontrol.SessionControlInteractor
 
 class MessageCardViewHolder(
     view: View,
     private val interactor: SessionControlInteractor
 ) : RecyclerView.ViewHolder(view) {
-    private val messagesManager: MessagesManager = view.context.components.messagesManager
-    private val message: Message? = messagesManager.getNextMessage()
 
-    init {
-        initialize(view)
-    }
+    fun bind(message:Message) {
+        val binding = NimbusMessageCardBinding.bind(itemView)
 
-    private fun initialize(view: View) {
-        val binding = NimbusMessageCardBinding.bind(view)
-        val safeMessage = message ?: return
-
-        if (safeMessage.data.title.isNullOrBlank()) {
+        if (message.data.title.isNullOrBlank()) {
             binding.titleText.isVisible = false
         } else {
-            binding.titleText.text = safeMessage.data.title
+            binding.titleText.text = message.data.title
         }
 
-        binding.descriptionText.text = safeMessage.data.text
+        binding.descriptionText.text = message.data.text
 
-        if (safeMessage.data.buttonLabel.isNullOrBlank()) {
+        if (message.data.buttonLabel.isNullOrBlank()) {
             binding.messageButton.isVisible = false
             binding.experimentCard.setOnClickListener {
-                interactor.onMessageClicked(safeMessage)
+                interactor.onMessageClicked(message)
             }
         } else {
-            binding.messageButton.text = safeMessage.data.buttonLabel
+            binding.messageButton.text = message.data.buttonLabel
             binding.messageButton.setOnClickListener {
-                interactor.onMessageClicked(safeMessage)
+                interactor.onMessageClicked(message)
             }
         }
 
         binding.close.apply {
             increaseTapArea(CLOSE_BUTTON_EXTRA_DPS)
             setOnClickListener {
-                interactor.onMessageClosedClicked(safeMessage)
+                interactor.onMessageClosedClicked(message)
             }
         }
     }

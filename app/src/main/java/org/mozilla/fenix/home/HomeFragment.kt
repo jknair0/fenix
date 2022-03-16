@@ -104,6 +104,7 @@ import org.mozilla.fenix.ext.runIfFragmentIsAttached
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.sort
 import org.mozilla.fenix.gleanplumb.DefaultMessageController
+import org.mozilla.fenix.gleanplumb.MessagingFeature
 import org.mozilla.fenix.home.blocklist.BlocklistHandler
 import org.mozilla.fenix.home.blocklist.BlocklistMiddleware
 import org.mozilla.fenix.home.mozonline.showPrivacyPopWindow
@@ -183,6 +184,7 @@ class HomeFragment : Fragment() {
     private lateinit var currentMode: CurrentMode
 
     private val topSitesFeature = ViewBoundFeatureWrapper<TopSitesFeature>()
+    private val messagingFeature = ViewBoundFeatureWrapper<MessagingFeature>()
     private val recentTabsListFeature = ViewBoundFeatureWrapper<RecentTabsListFeature>()
     private val recentBookmarksFeature = ViewBoundFeatureWrapper<RecentBookmarksFeature>()
     private val historyMetadataFeature = ViewBoundFeatureWrapper<RecentVisitsFeature>()
@@ -246,7 +248,6 @@ class HomeFragment : Fragment() {
                     topSites = getTopSites(components),
                     recentBookmarks = emptyList(),
                     showCollectionPlaceholder = components.settings.showCollectionsPlaceholderOnHome,
-                    showNimbusMessageCard = components.messagesManager.areMessagesAvailable(),
                     // Provide an initial state for recent tabs to prevent re-rendering on the home screen.
                     //  This will otherwise cause a visual jump as the section gets rendered from no state
                     //  to some state.
@@ -275,6 +276,16 @@ class HomeFragment : Fragment() {
                 homeFragmentStore.dispatch(HomeFragmentAction.PocketStoriesChange(emptyList()))
             }
         }
+
+        messagingFeature.set(
+            feature = MessagingFeature(
+                store = requireComponents.appStore,
+            ) { newMessage ->
+                homeFragmentStore.dispatch(HomeFragmentAction.NimbusMessageChange(newMessage))
+            },
+            owner = viewLifecycleOwner,
+            view = binding.root
+        )
 
         if (requireContext().settings().showTopSitesFeature) {
             topSitesFeature.set(
@@ -336,7 +347,8 @@ class HomeFragment : Fragment() {
                 engine = components.core.engine,
                 metrics = components.analytics.metrics,
                 messageController = DefaultMessageController(
-                    messageManager = components.messagesManager,
+                    appStore = components.appStore,
+                    messagingStorage = components.messagingStorage,
                     homeActivity = activity
                 ),
                 store = store,

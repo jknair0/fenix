@@ -7,7 +7,7 @@ package org.mozilla.fenix.gleanplumb
 /* Dummy implementation until we provide full implementation.
 * This will covered on https://github.com/mozilla-mobile/fenix/issues/24222
 * */
-class KeyPairMessageStorage : MessageStorage {
+class KeyPairMessageMetadataStorage : MessageMetadataStorage {
     override fun getMetadata(): List<Message.Metadata> {
         return listOf(
             Message.Metadata(

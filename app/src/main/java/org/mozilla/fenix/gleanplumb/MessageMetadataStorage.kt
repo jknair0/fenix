@@ -4,7 +4,7 @@
 
 package org.mozilla.fenix.gleanplumb
 
-interface MessageStorage {
+interface MessageMetadataStorage {
     /**
      * Provide all the message metadata saved in the storage.
      */
@@ -12,7 +12,7 @@ interface MessageStorage {
 
     /**
      * Given a [metadata] add the message metadata on the storage.
-     * @return the added message on the [MessageStorage]
+     * @return the added message on the [MessageMetadataStorage]
      */
     fun addMetadata(metadata: Message.Metadata): Message.Metadata
 

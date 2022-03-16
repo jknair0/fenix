@@ -18,11 +18,13 @@ sealed class AppAction : Action {
     data class RemoveNonFatalCrash(val crash: NativeCodeCrash) : AppAction()
     object RemoveAllNonFatalCrashes : AppAction()
 
-    // todo move to sealed class
-    object InitializeNimbus : AppAction()
-
-    data class UpdateMessages(val messages: List<Message>) : AppAction()
-    data class MessageClicked(val message: Message) : AppAction()
-    data class MessageDisplayed(val message: Message) : AppAction()
-    data class MessageDismissed(val message: Message) : AppAction()
+    sealed class MessagingAction : AppAction() {
+        object Initialize : MessagingAction()
+        object Evaluate : MessagingAction()
+        data class UpdateMessageToShow(val message: Message?) : MessagingAction()
+        data class UpdateMessages(val messages: List<Message>) : MessagingAction()
+        data class MessageClicked(val message: Message) : MessagingAction()
+        data class MessageDisplayed(val message: Message) : MessagingAction()
+        data class MessageDismissed(val message: Message) : MessagingAction()
+    }
 }

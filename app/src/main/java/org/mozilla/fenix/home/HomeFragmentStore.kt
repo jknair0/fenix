@@ -16,6 +16,7 @@ import mozilla.components.service.pocket.PocketRecommendedStory
 import org.mozilla.fenix.ext.filterOutTab
 import org.mozilla.fenix.ext.getFilteredStories
 import org.mozilla.fenix.ext.recentSearchGroup
+import org.mozilla.fenix.gleanplumb.Message
 import org.mozilla.fenix.home.pocket.POCKET_STORIES_TO_SHOW_COUNT
 import org.mozilla.fenix.home.pocket.PocketRecommendedStoriesCategory
 import org.mozilla.fenix.home.pocket.PocketRecommendedStoriesSelectedCategory
@@ -45,7 +46,7 @@ class HomeFragmentStore(
  * @property mode The state of the [HomeFragment] UI.
  * @property topSites The list of [TopSite] in the [HomeFragment].
  * @property showCollectionPlaceholder If true, shows a placeholder when there are no collections.
- * @property showNimbusMessageCard If true, shows the nimbus message card
+ * @property nimbusMessageCard If not null, shows the nimbus message card
  * @property recentTabs The list of recent [RecentTab] in the [HomeFragment].
  * @property recentBookmarks The list of recently saved [BookmarkNode]s to show on the [HomeFragment].
  * @property recentHistory The list of [RecentlyVisitedItem]s.
@@ -59,7 +60,7 @@ data class HomeFragmentState(
     val mode: Mode = Mode.Normal,
     val topSites: List<TopSite> = emptyList(),
     val showCollectionPlaceholder: Boolean = false,
-    val showNimbusMessageCard: Boolean = false,
+    val nimbusMessageCard: Message? = null,
     val recentTabs: List<RecentTab> = emptyList(),
     val recentBookmarks: List<RecentBookmark> = emptyList(),
     val recentHistory: List<RecentlyVisitedItem> = emptyList(),
@@ -104,7 +105,7 @@ sealed class HomeFragmentAction : Action {
         val categoriesSelected: List<PocketRecommendedStoriesSelectedCategory>
     ) : HomeFragmentAction()
     object RemoveCollectionsPlaceholder : HomeFragmentAction()
-    object RemoveSetDefaultBrowserCard : HomeFragmentAction()
+    data class NimbusMessageChange(val message: Message?) : HomeFragmentAction()
 }
 
 @Suppress("ReturnCount", "LongMethod")
@@ -143,7 +144,6 @@ private fun homeFragmentStateReducer(
         is HomeFragmentAction.RemoveCollectionsPlaceholder -> {
             state.copy(showCollectionPlaceholder = false)
         }
-        is HomeFragmentAction.RemoveSetDefaultBrowserCard -> state.copy(showNimbusMessageCard = false)
         is HomeFragmentAction.RecentTabsChange -> {
             val recentSearchGroup = action.recentTabs.find { it is SearchGroup } as SearchGroup?
             state.copy(
@@ -241,6 +241,7 @@ private fun homeFragmentStateReducer(
 
             state.copy(pocketStoriesCategories = updatedCategories)
         }
+        is HomeFragmentAction.NimbusMessageChange -> state.copy(nimbusMessageCard = action.message)
     }
 }
 

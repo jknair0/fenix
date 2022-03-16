@@ -5,6 +5,7 @@
 package org.mozilla.fenix.components.appstate
 
 import org.mozilla.fenix.components.AppStore
+import org.mozilla.fenix.gleanplumb.state.MessagingReducer
 
 /**
  * Reducer for [AppStore].
@@ -19,7 +20,6 @@ internal object AppStoreReducer {
             state.copy(nonFatalCrashes = state.nonFatalCrashes - action.crash)
         is AppAction.RemoveAllNonFatalCrashes ->
             state.copy(nonFatalCrashes = emptyList())
-        is AppAction.UpdateMessages ->
-            state.copy(gleanPlumbMessages = action.messages)
+        is AppAction.MessagingAction -> MessagingReducer.reduce(state, action)
     }
 }

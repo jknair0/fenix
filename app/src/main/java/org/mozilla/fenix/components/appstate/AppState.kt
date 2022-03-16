@@ -7,6 +7,7 @@ package org.mozilla.fenix.components.appstate
 import mozilla.components.lib.crash.Crash.NativeCodeCrash
 import mozilla.components.lib.state.State
 import org.mozilla.fenix.gleanplumb.Message
+import org.mozilla.fenix.gleanplumb.MessagingState
 
 /**
  * Value type that represents the state of the tabs tray.
@@ -14,9 +15,10 @@ import org.mozilla.fenix.gleanplumb.Message
  * @property inactiveTabsExpanded A flag to know if the Inactive Tabs section of the Tabs Tray
  * should be expanded when the tray is opened.
  * @property nonFatalCrashes List of non-fatal crashes that allow the app to continue being used.
+ * @property messagingState State related messages.
  */
 data class AppState(
     val inactiveTabsExpanded: Boolean = false,
     val nonFatalCrashes: List<NativeCodeCrash> = emptyList(),
-    val gleanPlumbMessages: List<Message>,
+    val messagingState: MessagingState = MessagingState(),
 ) : State

@@ -66,7 +66,6 @@ class HomeFragmentStoreTest {
             mode = currentMode.getCurrentMode(),
             topSites = emptyList(),
             showCollectionPlaceholder = true,
-            showNimbusMessageCard = true,
             recentTabs = emptyList()
         )
 

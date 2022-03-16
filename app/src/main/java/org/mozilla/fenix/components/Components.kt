@@ -29,8 +29,8 @@ import org.mozilla.fenix.autofill.AutofillSearchActivity
 import org.mozilla.fenix.autofill.AutofillUnlockActivity
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.settings
-import org.mozilla.fenix.gleanplum.KeyPairMessageStorage
-import org.mozilla.fenix.gleanplum.MessagesManager
+import org.mozilla.fenix.gleanplumb.KeyPairMessageMetadataStorage
+import org.mozilla.fenix.gleanplumb.MessagingStorage
 import org.mozilla.fenix.nimbus.FxNimbus
 import org.mozilla.fenix.perf.AppStartReasonProvider
 import org.mozilla.fenix.perf.StartupActivityLog
@@ -168,14 +168,16 @@ class Components(private val context: Context) {
     }
 
     val messageStorage by lazyMonitored {
-        KeyPairMessageStorage()
+        KeyPairMessageMetadataStorage()
     }
 
-    val messagesManager by lazyMonitored {
-        MessagesManager(
-            context,
-            messageStorage,
-            FxNimbus.features.messaging
+    val messagingStorage by lazyMonitored {
+        MessagingStorage(
+            context = context,
+            metadataStorage = messageStorage,
+            gleanPlumb = analytics.experiments,
+            messagingFeature = FxNimbus.features.messaging,
+            appStore = appStore
         )
     }
 

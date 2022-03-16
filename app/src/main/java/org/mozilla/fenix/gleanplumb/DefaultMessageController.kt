@@ -9,12 +9,17 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import org.mozilla.fenix.BuildConfig
 import org.mozilla.fenix.HomeActivity
+import org.mozilla.fenix.components.AppStore
+import org.mozilla.fenix.components.appstate.AppAction.MessagingAction.MessageClicked
+import org.mozilla.fenix.components.appstate.AppAction.MessagingAction.MessageDismissed
+import org.mozilla.fenix.components.appstate.AppAction.MessagingAction.MessageDisplayed
 
 /**
  * Handles default interactions with the ui of GleanPlumb messages.
  */
 class DefaultMessageController(
-    private val messageManager: MessagesManager,
+    private val appStore: AppStore,
+    private val messagingStorage: MessagingStorage,
     private val homeActivity: HomeActivity
 ) : MessageController {
 // Report malformed message events
@@ -22,20 +27,21 @@ class DefaultMessageController(
     override fun onMessagePressed(message: Message) {
         // Report telemetry event
         // This will be covered on https://github.com/mozilla-mobile/fenix/issues/24224
-        val action = messageManager.onMessagePressed(message)
+        val action = messagingStorage.getMessageAction(message)
         handleAction(action)
+        appStore.dispatch(MessageDismissed(message))
     }
 
     override fun onMessageDismissed(message: Message) {
         // Report telemetry event
         // This will be covered on https://github.com/mozilla-mobile/fenix/issues/24224
-        messageManager.onMessageDismissed(message)
+        appStore.dispatch(MessageClicked(message))
     }
 
     override fun onMessageDisplayed(message: Message) {
         // Report telemetry event
         // This will be covered on https://github.com/mozilla-mobile/fenix/issues/24224
-        messageManager.onMessageDisplayed(message)
+        appStore.dispatch(MessageDisplayed(message))
     }
 
     @VisibleForTesting

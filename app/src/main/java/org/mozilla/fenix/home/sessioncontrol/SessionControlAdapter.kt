@@ -17,6 +17,7 @@ import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.top.sites.TopSite
 import mozilla.components.ui.widgets.WidgetSiteItemView
 import org.mozilla.fenix.components.Components
+import org.mozilla.fenix.gleanplumb.Message
 import org.mozilla.fenix.home.BottomSpacerViewHolder
 import org.mozilla.fenix.home.HomeFragmentStore
 import org.mozilla.fenix.home.TopPlaceholderViewHolder
@@ -142,7 +143,12 @@ sealed class AdapterItem(@LayoutRes val viewType: Int) {
 
     object OnboardingManualSignIn : AdapterItem(OnboardingManualSignInViewHolder.LAYOUT_ID)
 
-    object ExperimentDefaultBrowserCard : AdapterItem(MessageCardViewHolder.LAYOUT_ID)
+    data class NimbusMessageCard(
+        val message: Message
+    ) : AdapterItem(MessageCardViewHolder.LAYOUT_ID) {
+        override fun sameAs(other: AdapterItem) =
+            other is NimbusMessageCard && message.id == other.message.id
+    }
 
     object OnboardingThemePicker : AdapterItem(OnboardingThemePickerViewHolder.LAYOUT_ID)
     object OnboardingTrackingProtection :
@@ -349,6 +355,9 @@ class SessionControlAdapter(
             }
             is TopSitePagerViewHolder -> {
                 holder.bind((item as AdapterItem.TopSitePager).topSites)
+            }
+            is MessageCardViewHolder -> {
+                holder.bind((item as AdapterItem.NimbusMessageCard).message)
             }
             is CollectionViewHolder -> {
                 val (collection, expanded) = item as AdapterItem.CollectionItem
