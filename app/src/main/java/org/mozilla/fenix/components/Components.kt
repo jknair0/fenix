@@ -31,6 +31,7 @@ import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.gleanplumb.KeyPairMessageMetadataStorage
 import org.mozilla.fenix.gleanplumb.MessagingStorage
+import org.mozilla.fenix.gleanplumb.FenixAttributeProvider
 import org.mozilla.fenix.nimbus.FxNimbus
 import org.mozilla.fenix.perf.AppStartReasonProvider
 import org.mozilla.fenix.perf.StartupActivityLog
@@ -177,7 +178,8 @@ class Components(private val context: Context) {
             metadataStorage = messageStorage,
             gleanPlumb = analytics.experiments,
             messagingFeature = FxNimbus.features.messaging,
-            appStore = appStore
+            appStore = appStore,
+            getCustomAttributes = FenixAttributeProvider::getCustomAttributes,
         )
     }
 

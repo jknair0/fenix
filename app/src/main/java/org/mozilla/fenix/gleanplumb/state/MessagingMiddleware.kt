@@ -57,7 +57,7 @@ class MessagingMiddleware(private val storage: MessagingStorage) : Middleware<Ap
                 val newMessage = oldMessage.copy(
                     metadata = newMetadata
                 )
-                val newMessages = if (newMetadata.displayCount < oldMessage.data.maxDisplayCount) {
+                val newMessages = if (newMetadata.displayCount < oldMessage.maxDisplayCount) {
                     updateMessage(context, oldMessage, newMessage)
                 } else {
                     removeMessage(context, oldMessage)

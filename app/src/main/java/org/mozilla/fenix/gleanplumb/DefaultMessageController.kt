@@ -47,7 +47,7 @@ class DefaultMessageController(
     @VisibleForTesting
     internal fun handleAction(action: String): Intent {
         val partialAction = if (action.startsWith("http", ignoreCase = true)) {
-            "://open?url=${action}" // TODO: base64 encode
+            "://open?url=${action}" // TODO: URL encode
         } else {
             action
         }
